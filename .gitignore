@@ -1,0 +1,9 @@
+mupeppbo_project/__pycache__/
+send_sms_app/__pycache__/
+send_sms_app/migrations/__pycache__/
+db.sqlite3
+users/__pycache__/
+users/migrations/__pycache__/
+.python-version
+dump.rdb
+env/
