@@ -1,7 +1,11 @@
 from celery import shared_task
 import requests
 import time
-import dotenv
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 @shared_task
 def get_token(url):
@@ -23,8 +27,7 @@ def get_token(url):
 @shared_task
 def send_mass_sms_task(phone_list, content_list, access_token):
 
-
-    url = "https://api.orange.com/smsmessaging/v1/outbound/tel%3A%2B2250707830932/requests"
+    url = os.getenv("SEND_SMS_URL")
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
@@ -38,7 +41,7 @@ def send_mass_sms_task(phone_list, content_list, access_token):
 		        "outboundSMSTextMessage": {
 			        "message": f"{content_list}"
                 }
-            }()
+            }
 		}
         rq = requests.post(url=url, json=data, headers=headers)
         print(f"Contenu de la reponse : {rq.json()}")

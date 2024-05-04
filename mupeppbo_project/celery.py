@@ -1,5 +1,8 @@
 import os
 from celery import Celery
+from dotenv import load_dotenv
+
+load_dotenv()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mupeppbo_project.settings")
 app = Celery("mupeppbo_project")
@@ -10,6 +13,6 @@ app.conf.beat_schedule = {
     'generate-token-every-hour': {
         'task': 'send_sms_app.tasks.get_token',
         'schedule': 3600,
-        'args': ('https://api.orange.com/oauth/v3/token',)
+        'args': (os.getenv("TOKEN_URL"),)
     }
 }

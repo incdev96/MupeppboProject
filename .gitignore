@@ -7,3 +7,4 @@ users/migrations/__pycache__/
 .python-version
 dump.rdb
 env/
+mupeppbo_project/.env
