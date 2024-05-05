@@ -13,7 +13,7 @@ def get_token(url):
         "grant_type": "client_credentials"
     }
     headers = {
-        "Authorization": "AUTHORIZATION",
+        "Authorization": os.getenv("AUTH_HEADER"),
         "Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json",
     }
