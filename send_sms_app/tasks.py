@@ -19,6 +19,7 @@ def get_token(url):
     }
     rq = requests.post(url, data=payload, headers=headers)
     rq_json = rq.json()
+    print(f"le token est: {rq_json["access_token"]}")
     return rq_json["access_token"]
 
 
@@ -44,5 +45,4 @@ def send_mass_sms_task(phone_list, content_list, access_token):
             }
 		}
         rq = requests.post(url=url, json=data, headers=headers)
-        print(f"Contenu de la reponse : {rq.json()}")
         time.sleep(0.2)

@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.contrib import messages
 from .models import Mutualist, Sms
 from . import tasks
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 
@@ -27,8 +31,8 @@ class SmsAdmin(admin.ModelAdmin):
 
         phone_list = (m for m in Mutualist.objects.values_list("phone", flat=True))
         content_list = " ".join([c.content for c in queryset])
-        access_token = tasks.get_token.delay().get()
+        access_token = tasks.get_token.delay(os.getenv("TOKEN_URL")).get()
         tasks.send_mass_sms_task(phone_list, content_list, access_token)
         self.message_user(
-            request, "Message envoyé à tous les mutualistes", messages.SUCCESS,
+            request, "Message(s) envoyé(s) à tous les mutualistes", messages.SUCCESS,
         )
