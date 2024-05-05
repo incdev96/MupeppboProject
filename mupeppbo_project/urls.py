@@ -21,5 +21,5 @@ admin.site.site_header = 'Administration MUPEPPBO'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("send_sms_app.urls"), name='index'),
+    path('', include("send_sms_app.urls")),
 ]
