@@ -17,6 +17,7 @@ class Mutualist(models.Model):
 class Sms(models.Model):
 
     content = models.TextField("contenu")
+    mutualists = models.ManyToManyField(Mutualist)
     
 
     def __str__(self):
