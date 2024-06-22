@@ -12,7 +12,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'generate-token-every-hour': {
         'task': 'send_sms_app.tasks.get_token',
-        'schedule': 120,
+        'schedule': 3600,
         'args': (os.getenv("TOKEN_URL"),)
     }
 }
