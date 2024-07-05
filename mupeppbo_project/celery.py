@@ -1,6 +1,7 @@
 import os
 from celery import Celery
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -12,7 +13,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'generate-token-every-hour': {
         'task': 'send_sms_app.tasks.get_token',
-        'schedule': 3600,
+        'schedule': crontab(minute='*/5'),
         'args': (os.getenv("TOKEN_URL"),)
     }
 }
