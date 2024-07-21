@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 @shared_task
-def get_token(url):
+def get_token():
+    url = os.getenv("TOKEN_URL")
     payload = {
         "grant_type": "client_credentials"
     }
@@ -18,9 +19,8 @@ def get_token(url):
         "Accept": "application/json",
     }
     rq = requests.post(url, data=payload, headers=headers)
-    rq_json = rq.json()
-    print(f"le token est: {rq_json["access_token"]}")
-    return rq_json["access_token"]
+    print(f"Le token est: {rq.json()["access_token"]}")
+    return rq.json()["access_token"]
 
 
 
@@ -33,8 +33,9 @@ def send_mass_sms_task(phone_list, content_list, access_token):
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
+    # print(f"Les données à envoyer: phone list: {phone_list}, content list: {content_list}, access token: {access_token}")
     for phone in phone_list:
-        data = {
+        payload = {
             "outboundSMSMessageRequest": {
 		        "address": f"tel:+225{phone}",
 		        "senderAddress":"tel:+2250707830932",
@@ -44,5 +45,6 @@ def send_mass_sms_task(phone_list, content_list, access_token):
                 }
             }
 		}
-        rq = requests.post(url=url, json=data, headers=headers)
+        rq = requests.post(url=url, json=payload, headers=headers)
+        print(f"REQUETE: {rq.text}")
         time.sleep(0.2)

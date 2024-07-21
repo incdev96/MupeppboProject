@@ -33,7 +33,7 @@ class SmsAdmin(admin.ModelAdmin):
     @admin.action(description="envoyer un sms aux mutualistes")
     def send_sms(self, request, queryset):
 
-        access_token = tasks.get_token.delay(os.getenv("TOKEN_URL")).get()
+        access_token = tasks.get_token.delay().get()
         content_list = " ".join([c.content for c in queryset])
         phone_list = []
         for sms in queryset:
@@ -42,8 +42,8 @@ class SmsAdmin(admin.ModelAdmin):
                 phone_list.append(m.phone)
  
 
-        # phone_list = (m for m in Mutualist.objects.values_list("phone", flat=True))
-        tasks.send_mass_sms_task(phone_list, content_list, access_token)
+        print(f"phone list: {phone_list}, content_list: {content_list}, access_token: {access_token}")
+        tasks.send_mass_sms_task.delay(phone_list, content_list, access_token)
         self.message_user(
             request, "Message(s) envoyé(s) à tous les mutualistes", messages.SUCCESS,
         )
